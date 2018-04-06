@@ -9,7 +9,7 @@ Most braintree APIs are stubbed out and provide reasonable/workable return value
 
 ## Usage
 
-    var braintree = require('./index');
+    var braintree = require('mock-braintree');
 
     var purchaseObj = {
       paymentMethodToken: 'fake-valid-visa-nonce',
