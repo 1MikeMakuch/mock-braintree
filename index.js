@@ -16,16 +16,18 @@ const debug = require('debug')('mock-braintree');
 
 var braintree = {
   clientToken: {},
-  transaction: {},
+  transaction: {setFindStatus: () => {}},
   customer: {},
   paymentMethod: {},
   subscription: {},
   Environment: {},
   webhookTesting: {},
+  webhookNotification: {},
   WebhookNotification: {
     Kind: {
       SubscriptionChargedSuccessfully: {},
     },
+    parse: function() {},
   },
   Transaction: {
     Status: {
@@ -48,6 +50,13 @@ braintree.webhookTesting.sampleNotification = function(obj, id) {
     bt_payload:
       'PG5vdGlmaWNhdGlvbj4KICAgIDx0aW1lc3RhbXAgdHlwZT0iZGF0ZXRpbWUiPjIwMTgtMDMtMjFUMjA6NDM6MjVaPC90aW1lc3RhbXA+CiAgICA8a2luZD5zdWJzY3JpcHRpb25fY2hhcmdlZF9zdWNjZXNzZnVsbHk8L2tpbmQ+CiAgICA8c3ViamVjdD48c3Vic2NyaXB0aW9uPgogICAgPGlkPnBsdWdoPC9pZD4KICAgIDx0cmFuc2FjdGlvbnMgdHlwZT0iYXJyYXkiPgogICAgICA8dHJhbnNhY3Rpb24+CiAgICAgICAgPHN0YXR1cz5zdWJtaXR0ZWRfZm9yX3NldHRsZW1lbnQ8L3N0YXR1cz4KICAgICAgICA8YW1vdW50PjQ5Ljk5PC9hbW91bnQ+CiAgICAgIDwvdHJhbnNhY3Rpb24+CiAgICA8L3RyYW5zYWN0aW9ucz4KICAgIDxhZGRfb25zIHR5cGU9ImFycmF5Ij48L2FkZF9vbnM+CiAgICA8ZGlzY291bnRzIHR5cGU9ImFycmF5Ij48L2Rpc2NvdW50cz4KPC9zdWJzY3JpcHRpb24+PC9zdWJqZWN0Pgo8L25vdGlmaWNhdGlvbj4=\n',
   };
+};
+
+braintree.webhookNotification.parse = function(sig, payload) {
+  debug('mock braintree.webhookNotification.parse');
+  return new Promise((res, rej) => {
+    res({kind: 'check'});
+  });
 };
 
 braintree.transaction.refund = function(id, amount) {
@@ -86,20 +95,28 @@ braintree.transaction.void = function(id) {
 };
 
 var TransactionFindStatus = 'settled';
+
 braintree.transaction.setFindStatus = function(status) {
-    TransactionFindStatus = status;
-}
+  debug('mock braintree.transaction.setFindStatus', JSON.stringify(status));
+  TransactionFindStatus = status;
+};
+braintree.transaction.getFindStatus = function() {
+  debug('mock braintree.transaction.getFindStatus', TransactionFindStatus);
+  return TransactionFindStatus;
+};
 
 braintree.transaction.find = function(id) {
+  debug('\n\nmock braintree.transaction.find status:', id, TransactionFindStatus);
+  //       status: 'authorized', // requires void
+  //       status: 'settled', // requires refund
   return new Promise((res, rej) => {
     res({
       status: TransactionFindStatus,
-//    status: 'authorized', // requires void
-      status: 'settled', // requires refund
       id: id,
     });
   });
 };
+
 braintree.clientToken.generate = function(obj, callback) {
   var response = {
     clientToken: String(uuid.v4()).replace(/-.*/, '-mock'),
@@ -159,8 +176,8 @@ var subscriptionData = {};
 braintree.subscription.create = function(obj) {
   debug('mock braintree.subscription.create', JSON.stringify(obj));
   return new Promise((res, rej) => {
-  subscriptionData = subscriptionCreate(obj);
-    res(subscriptionData)
+    subscriptionData = subscriptionCreate(obj);
+    res(subscriptionData);
   });
 };
 
@@ -185,7 +202,7 @@ braintree.subscription.search = function(searchFunction) {
 braintree.subscription.cancel = function(id) {
   debug('mock braintree.subscription.cancel', id, '\n');
   return new Promise((res, rej) => {
-    res({});
+    res({success: true});
   });
 };
 
@@ -434,9 +451,9 @@ function subscriptionCreate(obj) {
       id: id,
       merchantAccountId: 'xyzzy',
       neverExpires: false,
-      nextBillAmount: '21.23',
+      nextBillAmount: obj.price,
       nextBillingDate: '2018-04-01',
-      nextBillingPeriodAmount: '21.23',
+      nextBillingPeriodAmount: obj.price,
       numberOfBillingCycles: 3,
       paidThroughDate: '2018-03-31',
       paymentMethodToken: '8yrn3s',
@@ -459,7 +476,7 @@ function subscriptionCreate(obj) {
         {
           addOns: [],
           additionalProcessorResponse: null,
-          amount: '21.23',
+          amount: obj.price,
           androidPayCard: {},
           applePayCard: {},
           authorizationAdjustments: [],
@@ -957,7 +974,7 @@ function sale(amount) {
 }
 
 braintree.connect = function(params) {
-  debug('mock braintree.connect', JSON.stringify(params));
+  //  debug('mock braintree.connect', JSON.stringify(params));
   return braintree;
 };
 module.exports = braintree;
