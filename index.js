@@ -113,6 +113,7 @@ braintree.transaction.find = function(id) {
     res({
       status: TransactionFindStatus,
       id: id,
+      type: 'sale',
     });
   });
 };
