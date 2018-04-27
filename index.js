@@ -59,8 +59,22 @@ braintree.webhookNotification.parse = function(sig, payload) {
   });
 };
 
+var TransactionRefundResult = null;
+
+braintree.transaction.setRefundResult = function(result) {
+  debug('mock braintree.transaction.setRefundStatus', JSON.stringify(result));
+  TransactionRefundResult = result;
+};
+
 braintree.transaction.refund = function(id, amount) {
   debug('mock braintree.transaction.refund', id, amount, '\n');
+
+  if (TransactionRefundResult) {
+    var tmp = TransactionRefundResult;
+    TransactionRefundResult = null;
+    return tmp;
+  }
+
   if (amount) {
     return {
       success: true,
