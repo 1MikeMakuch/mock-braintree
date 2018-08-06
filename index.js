@@ -185,6 +185,12 @@ braintree.paymentMethod.create = function(obj) {
   debug('mock braintree.paymentMethod.create', JSON.stringify(obj));
   return paymentMethodCreate(obj);
 };
+braintree.paymentMethod.delete = function(token) {
+  debug('mock braintree.paymentMethod.delete', token);
+  return new Promise((res, rej) => {
+    return res(true);
+  });
+};
 
 var subscriptionData = {};
 
