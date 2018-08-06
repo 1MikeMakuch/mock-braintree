@@ -1,5 +1,6 @@
 'use strict';
 
+
 // mockBraintree.js - makes unit tests run much faster.
 
 const uuid = require('uuid');
