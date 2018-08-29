@@ -1,6 +1,5 @@
 'use strict';
 
-
 // mockBraintree.js - makes unit tests run much faster.
 
 const uuid = require('uuid');
@@ -26,7 +25,13 @@ var braintree = {
   webhookNotification: {},
   WebhookNotification: {
     Kind: {
-      SubscriptionChargedSuccessfully: {},
+      SubscriptionCanceled: 'subscription_canceled',
+      SubscriptionChargedSuccessfully: 'subscription_charged_successfully',
+      SubscriptionChargedUnSuccessfully: 'subscription_charged_unsuccessfully',
+      SubscriptionExpired: 'subscription_expired',
+      SubscriptionTrialended: 'subscription_trial_ended',
+      SubscriptionWentActive: 'subscription_went_active',
+      SubscriptionWentPastDue: 'subscription_went_past_due',
     },
     parse: function() {},
   },
