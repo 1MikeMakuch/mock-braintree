@@ -1,6 +1,6 @@
 {
   "name": "mock-braintree",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "mock braintree for testing backend without calling braintree",
   "main": "index.js",
   "scripts": {
