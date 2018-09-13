@@ -213,7 +213,7 @@ braintree.subscription.update = function(id, priceObj) {
   subscriptionData.id = id;
   subscriptionData.price = priceObj.price;
   return new Promise((res, rej) => {
-    res({});
+    res({success: true});
   });
 };
 
@@ -661,6 +661,9 @@ function subscriptionCreate(obj) {
     },
     success: true,
   };
+  if (obj.firstBillingDate) {
+    delete r.subscription.transactions;
+  }
 
   return r;
 }
