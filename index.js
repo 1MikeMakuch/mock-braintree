@@ -27,7 +27,7 @@ var braintree = {
     Kind: {
       SubscriptionCanceled: 'subscription_canceled',
       SubscriptionChargedSuccessfully: 'subscription_charged_successfully',
-      SubscriptionChargedUnSuccessfully: 'subscription_charged_unsuccessfully',
+      SubscriptionChargedUnsuccessfully: 'subscription_charged_unsuccessfully',
       SubscriptionExpired: 'subscription_expired',
       SubscriptionTrialended: 'subscription_trial_ended',
       SubscriptionWentActive: 'subscription_went_active',
