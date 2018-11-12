@@ -29,7 +29,7 @@ var braintree = {
       SubscriptionChargedSuccessfully: 'subscription_charged_successfully',
       SubscriptionChargedUnsuccessfully: 'subscription_charged_unsuccessfully',
       SubscriptionExpired: 'subscription_expired',
-      SubscriptionTrialended: 'subscription_trial_ended',
+      SubscriptionTrialEnded: 'subscription_trial_ended',
       SubscriptionWentActive: 'subscription_went_active',
       SubscriptionWentPastDue: 'subscription_went_past_due',
     },
