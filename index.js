@@ -140,9 +140,13 @@ braintree.transaction.find = function(id) {
 
 braintree.clientToken.generate = function(obj, callback) {
   var response = {
+    success: true,
     clientToken: String(uuid.v4()).replace(/-.*/, '-mock'),
   };
-  callback({}, response);
+  // callback({}, response);
+  return new Promise((res, rej) => {
+    res(response);
+  })
 };
 
 braintree.xyzzy = function() {
