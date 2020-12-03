@@ -169,11 +169,19 @@ braintree.customer.delete = function(obj) {
 var searchObj = {};
 searchObj.private = {
   email: null,
+  id: null
 };
 searchObj.email = function() {
   return {
     is: function(email) {
       searchObj.private.email = email;
+    },
+  };
+};
+searchObj.id = function() {
+  return {
+    is: function(id) {
+      searchObj.private.id = id;
     },
   };
 };
