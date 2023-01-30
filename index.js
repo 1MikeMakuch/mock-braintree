@@ -138,6 +138,13 @@ braintree.transaction.find = function(id) {
   });
 };
 
+braintree.transaction.submitForSettlement = function (id, amount) {
+    debug("mock braintree.transaction.submitForSettlement", JSON.stringify(id));
+    return new Promise((res, rej) => {
+        res(sale(amount));
+    });
+};
+
 braintree.clientToken.generate = function(obj, callback) {
   var response = {
     clientToken: String(uuid.v4()).replace(/-.*/, '-mock'),
