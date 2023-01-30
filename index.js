@@ -142,7 +142,7 @@ braintree.clientToken.generate = function(obj, callback) {
   var response = {
     clientToken: String(uuid.v4()).replace(/-.*/, '-mock'),
   };
-  callback({}, response);
+  return callback ? callback({}, response) : Promise.resolve(response);
 };
 
 braintree.xyzzy = function() {
